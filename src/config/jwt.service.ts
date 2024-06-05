@@ -14,4 +14,10 @@ export class JwtService {
   async verify(token: string): Promise<any> {
     return this.jwtService.verify(token);
   }
+
+  async decode(token: string): Promise<any> {
+    // Decodes a token without verification
+    return this.jwtService.decode(token);
+  }
+  
 }

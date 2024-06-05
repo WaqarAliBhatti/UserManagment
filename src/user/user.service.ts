@@ -59,7 +59,7 @@ export class UserService {
    } catch (error) {
     console.log("Error In Catch",error);
     
-    return { message: `Error ==> ${error.message}` , data: null  };
+    return { message: `Error ==> ${error}` , data: null  };
    
    } 
     }
@@ -77,8 +77,17 @@ export class UserService {
     return {message,data:deletedUser}
   }
   async findUserDetailsOfLoggedIn (id: string) {
-    const fullData= await this.userRepository.createQueryBuilder('u').leftJoin("u.userData",'ud').where('ud.id=:id',{id}).getMany();
-
+    const uid=+id;
+    if (isNaN(uid)) {
+      return { message: "Invalid user ID", data: null };
+    }
+    const fullData= await this.userRepository
+    .createQueryBuilder('u')
+    .where('u.id=:uid',{uid})
+    .leftJoinAndSelect("u.userData",'ud')
+    .getOne();
+    console.log("fullData ==>",fullData);
+    
     let message=!fullData?"User Not Found ":"User Found";
     return {message,data:fullData}
   }

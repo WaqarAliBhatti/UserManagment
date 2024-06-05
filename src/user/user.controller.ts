@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Request, UseGuards, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -75,8 +75,9 @@ export class UserController {
   @Post('/userDetails')
   @ApiOperation({ summary: 'Get user Details by ID' })
   @ApiResponse({ status: 200, description: 'Get user Details by ID', type: User })
-  findUserDetailsOfLoggedIn(@Body() id:CreateUserDetails) {
+  findUserDetailsOfLoggedIn(@Body() id:CreateUserDetails,@Req() req:Request) {
     try {
+      console.log("req:Object ==>",req);
       
       return this.userService.findUserDetailsOfLoggedIn(id.id);
     } catch (error) {
